@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.pre("save", async function () {
+UserSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -40,6 +40,8 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-UserSchema.methods.getSignedJwt = function () {
+UserSchema.methods.getSignedJWT = function () {
   return jwt.sign({ user: this }, "123456", { expiresIn: "30d" });
 };
+
+module.exports = mongoose.model("User", UserSchema);
