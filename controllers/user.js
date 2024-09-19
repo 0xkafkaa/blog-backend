@@ -19,30 +19,27 @@ exports.register = async function register(req, res) {
   });
 };
 
-exports.login = async function login(req, res) {
+exports.login = async function login(req, res, next) {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.json({
-      success: false,
-      err: { message: "Invalid Credentials" },
+    return next({
+      message: "Please provide valid email and  password",
     });
   }
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    return res.json({
-      success: false,
-      err: { message: "Invalid Credentials" },
+    return next({
+      message: "Invalid Credentials",
     });
   }
 
   const isMatch = await user.matchPassword(password);
 
   if (!isMatch) {
-    return res.json({
-      success: false,
-      err: { message: "Invalid Credentials" },
+    return next({
+      message: "Invalid Credentials. Wrong Password",
     });
   }
 
