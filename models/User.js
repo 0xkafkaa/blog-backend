@@ -41,7 +41,9 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 UserSchema.methods.getSignedJWT = function () {
-  return jwt.sign({ user: this }, "123456", { expiresIn: "30d" });
+  return jwt.sign({ user: this }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
 };
 
 module.exports = mongoose.model("User", UserSchema);
