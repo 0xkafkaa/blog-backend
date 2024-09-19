@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const { tryCatch } = require("../utils/tryCatch");
 
-exports.authenticate = async function (req, res, next) {
+exports.authenticate = tryCatch(async function (req, res, next) {
   let token;
   if (
     req.headers.authorization &&
@@ -15,7 +16,7 @@ exports.authenticate = async function (req, res, next) {
   }
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decode);
+    // console.log(decode);
     req.user = decode.user;
     next();
   } catch (error) {
@@ -23,4 +24,4 @@ exports.authenticate = async function (req, res, next) {
       message: "Unauthorized. Error while verifying",
     });
   }
-};
+});
