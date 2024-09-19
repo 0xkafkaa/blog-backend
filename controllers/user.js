@@ -1,6 +1,7 @@
 const User = require("../models/User");
+const { tryCatch } = require("../utils/tryCatch");
 
-exports.register = async function register(req, res) {
+exports.register = tryCatch(async function register(req, res) {
   const { name, email, password, role } = req.body;
 
   const user = await User.create({
@@ -17,9 +18,9 @@ exports.register = async function register(req, res) {
     user,
     token,
   });
-};
+});
 
-exports.login = async function login(req, res, next) {
+exports.login = tryCatch(async function login(req, res, next) {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -49,4 +50,4 @@ exports.login = async function login(req, res, next) {
     success: true,
     token,
   });
-};
+});
