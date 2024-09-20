@@ -46,4 +46,16 @@ UserSchema.methods.getSignedJWT = function () {
   });
 };
 
+UserSchema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "user",
+});
+
+UserSchema.virtual("post", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "post",
+});
+
 module.exports = mongoose.model("User", UserSchema);

@@ -32,4 +32,10 @@ PostSchema.pre("save", function (next) {
   next();
 });
 
-module.exports = mongoose.model("Posts", PostSchema);
+PostSchema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "post",
+});
+
+module.exports = mongoose.model("Post", PostSchema);
