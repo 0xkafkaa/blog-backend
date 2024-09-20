@@ -25,3 +25,14 @@ exports.authenticate = tryCatch(async function (req, res, next) {
     });
   }
 });
+
+exports.authorize = function (roles) {
+  return function (req, res, next) {
+    if (!roles.includes(req.user.role)) {
+      return next({
+        message: "Unauthorized to access this route",
+      });
+    }
+    next();
+  };
+};
