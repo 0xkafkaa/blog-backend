@@ -51,3 +51,8 @@ exports.login = tryCatch(async function login(req, res, next) {
     token,
   });
 });
+
+exports.getAllUsers = tryCatch(async function (req, res) {
+  const users = await User.find();
+  res.status(200).json({ users });
+});
